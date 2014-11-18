@@ -1,0 +1,80 @@
+ 
+
+Phase2 Tests
+1) wall tests
+2) parser
+3) joining walls on server
+
+Phase2 TODO
+1) Grammar
+	-LEXER: some regexes
+	-PARSER: 
+		-board returns [String expr]: 'board'
+		-ball returns [String expr]: 'ball'
+		-squareBumper returns [String expr]: 'squareBumper'
+		-circleBumper returns [String expr]: 'circleBumper'
+		-triangleBumper returns [String expr]: 'triangleBumper'
+		-rightFlipper returns [String expr]: 'rightFlipper'
+		-leftFlipper returns [String expr]: 'leftFlipper'
+		-absorber returns [String expr]: 'absorber'
+		-fire returns [String expr]: 'fire'
+	-MEMBERS: 
+		-createBoard(name, gravity, friction, firction2) 
+		-createBall(name, x, y, xVelocity, yVelocity)
+		-createSquareBumper(name, x, y)
+		-createCircleBumper(name, x, y)
+		-createTriangleBumper(name, x, y, orientation) #orientations need to be converted to angles
+		-createRightFlipper(name, x, y, orientation)
+		-createLeftFlipper(name, x, y, orientation)
+		-createAbsorber(name, x, y. width, height)
+		-createFire(trigger, action) #trigger and action are both gadget names 
+		
+2) single machine play
+	implement main method so it runs using:
+		-input file for board
+		-default board
+		
+3) server for client-server play
+	TODO: client server protocol
+	DONE: establishing server connection
+		establishing client connection
+
+
+	PingballServer.java:
+	-start server Pingball [--port PORT]
+	-start client Pingball [--host HOST] (opt) [--port PORT] (opt) FILE
+	
+	Server Operations:
+	A. 2 or more clients with the same board name:
+	 	i. read in file, if filename collision, report to user
+	 	   and disconnect user
+
+	B. invisible walls 
+		i.  set coeff reflection = 0
+		ii. set name of wall to be name of board its connected to
+		iii. change printout of board
+		iv. add ifInvisible method
+		v.  ifInvisible --> Ball.hitInvisibleWall() --> server side reallocation
+		
+	C. support board joining and ball sending
+		i.	server - client send balls via message passing
+		ii. Ball method:
+			Ball.hitInvisibleWall()
+			-update the ball's location depending on whether
+			 	the wall is a top, bottom, left, or right wall
+			-return <Ball, String> key, value pair of 
+				ball: the name of the board that this ball is going to
+		iii. Board: join boards by changing walls
+		iv. Board method for adding and removing balls
+
+
+Board toPrint():
+-check whether a gadget is an invisible wall and implement depending on this
+
+When a name set to wall:
+	-if "" set isInvisible to false
+	-else set isInvisible to true
+
+Kamilla:
+	-fix Wall toConsoleCoordinates
+	-fix toPrint in Board
